@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 
 def get_closest_point(x, y):
     """
+    Finds the intersetion point of the circle and the line between (0, 0) and (x, y).
     """
-
     slope = y / x
     x_close = (0.25 / (1 + slope * slope))**(0.5)
     y_close = slope * x_close
@@ -23,21 +23,33 @@ def get_closest_point(x, y):
 
 
 def in_circle(x, y):
+    """
+    Returns if the point is inside circle or not.
+    """
     if x * x + y * y - 0.25 <= 0:
         return 1
     return 0
 
 
 def get_interpoint_distance(ax, ay, bx, by):
+    """
+    Calculates the euclidian distance b/w 2 points.
+    """
     distance = ((ax - bx)**2 + (ay - by)**2)**(0.5)
     return distance
 
 
 def get_direct_time(ax, ay, bx, by):
+    """
+    Calculates the direct time taken from point a to b.
+    """
     return (get_interpoint_distance(ax, ay, bx, by), ([ax, bx], [ay, by]))
 
 
 def get_expressway_time(ax, ay, bx, by):
+    """
+    Calculates the time taken from point a to b if the expressway is presents.
+    """
     a_in_circle = in_circle(ax, ay)
     b_in_circle = in_circle(bx, by)
 
@@ -68,6 +80,9 @@ def get_expressway_time(ax, ay, bx, by):
 
 
 def actual_travel_time(ax, ay, bx, by):
+    """
+    Returns the minimum of the 2 times - direct or expressway.
+    """
     td, points = get_direct_time(ax, ay, bx, by)
     te, points = get_expressway_time(ax, ay, bx, by)
     if td > te:
@@ -77,6 +92,9 @@ def actual_travel_time(ax, ay, bx, by):
 
 
 def simulation(a, b):
+    """
+    Runs the simulation for a set of starting and ending positions.
+    """
     times = []
     points = []
     time_type = []
@@ -91,10 +109,17 @@ def simulation(a, b):
 
 
 def average_time(times):
+    """
+    Returns the average of all the times for all the set of start and ending
+    positions.
+    """
     return times.mean()
 
 
 def draw(ax, bx, ay, by, path_points):
+    """
+    Draws the whole flow trace.
+    """
     circle = plt.Circle((0, 0), 0.5, color='black', fill=0)
     rectangle = plt.Rectangle((0, 0), 1, 0.6, color='black', fill=0)
     plt.gca().add_artist(circle)
@@ -111,6 +136,9 @@ def draw(ax, bx, ay, by, path_points):
 
 
 def init(num):
+    """
+    Returns the "num" number of starting and ending positions.
+    """
     ax = np.random.uniform(0, 1, num)
     bx = np.random.uniform(0, 1, num)
     ay = np.random.uniform(0, 0.6, num)
